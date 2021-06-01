@@ -1,14 +1,14 @@
 public class ListAPI<E>{
   private int capacity; //total capacity of underlying array
   private int length;
-  private int arrayList[];
+  private E arrayList[];
 
 
   //constructor
   public ListAPI(int capacity){
     this.capacity = capacity;
     this.length = 0;
-    arrayList = new int[capacity];
+    arrayList[capacity] = null;
   } //IntArrayList(int)
 
   //default constructor
@@ -18,18 +18,21 @@ public class ListAPI<E>{
 
   //retuns element at given index i
   public E get(int i){
+    E returnElement = null;
     if(isValid(i)){
-      return arrayList[i];
+      returnElement = arrayList[i];
     } //if
+    return returnElement;
   } //get(int)
 
   //sets index i to new element e and returns old elements
   private E set(int i, E e){
+    E oldElement = null;
     if(isValid(i)){
       oldElement = arrayList[i];
       arrayList[i] = e;
-      return oldElement;
     }
+    return oldElement;
   } //set(int, T)
 
   //appends given integer e to the end of list
@@ -46,7 +49,7 @@ public class ListAPI<E>{
     if(isFull()){
       resize(capacity*2);
     } //if
-    for(index = length-1; index > i; index--){
+    for(int index = length-1; index > i; index--){
       arrayList[index+1] = arrayList[index];
     } //for
     arrayList[i] = e;
@@ -55,26 +58,26 @@ public class ListAPI<E>{
 
   //removes an element at given index, and returns it
   public E remove(int i){
-    removedElement = arrayList[i];
+    E removedElement = arrayList[i];
     if(isValid(i)){
-      if(i < L.length-1){
-        for (int j = i+1; j < L.length+1; j++){
-          L.array[j-1] = L.array[j];
+      if(i < length-1){
+        for (int j = i+1; j < length+1; j++){
+          arrayList[j-1] = arrayList[j];
         } //for
       } else {
-        L.array[i] = null;
+        arrayList[i] = null;
       }//if else
-      L.length--;
-      if (L.length < L.capacity/4){
-          resize(L.capacity/2);
+      length--;
+      if (length < capacity/4){
+          resize(capacity/2);
       }//if
-      return removedElement;
     } //if
+    return removedElement;
   } //remove(int)
 
   //removes first instance of element e. returns true if successful, false otherwise
   public boolean remove(E e){
-    index = indexOf(e);
+    int index = indexOf(e);
     if(index == -1){
       return false;
     } //if
@@ -84,7 +87,7 @@ public class ListAPI<E>{
 
   //returns the index of first instance of element e, and -1 if it does not exist
   public int indexOf(E e){
-    for(index = 0; index < length-1; index++){
+    for(int index = 0; index < length-1; index++){
       if(arrayList[index] == e){
         return index;
       } //if
@@ -109,8 +112,8 @@ public class ListAPI<E>{
 
   //creates new underlying array of different size
   private void resize(int newCapacity){
-    int oldArray[] = arrayList;
-    arrayList = new int[newCapacity];
+    E oldArray[] = arrayList;
+    arrayList[newCapacity] = null;
     for(int i = 0; i < length; i++){
       arrayList[i] = oldArray[i];
     } //for
@@ -120,17 +123,16 @@ public class ListAPI<E>{
 
   //returns true if given element e is in the list, false if not
   public boolean contains(E e){
-    for(int i; i < length; i++){
+    for(int i = 0; i < length; i++){
       if(arrayList[i] == e){
         return true;
-      } else {
-        return false;
       } //if
     } //for
+    return false;
   } //contains(T)
 
   private boolean isValid(int i){
-    return i < 0 || i >= L.length;
+    return i < 0 || i >= length;
   } //isValid(int)
 
   public static void main(String[] args){
